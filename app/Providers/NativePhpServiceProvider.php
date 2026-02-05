@@ -24,11 +24,13 @@ class NativePhpServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole() && class_exists(\Native\Laravel\Facades\Window::class)) {
             Window::open()
                 ->id('main')
-                ->title('Mini Splitwise')
-                ->width(1200)
-                ->height(800)
-                ->minWidth(800)
+                ->title('SplitEasy Desktop')
+                ->width(450)
+                ->height(850)
+                ->minWidth(400)
                 ->minHeight(600)
+                ->resizable(true)
+                ->rememberState()
                 ->url('/');
         }
     }

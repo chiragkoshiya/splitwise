@@ -20,7 +20,7 @@ class SettlementPolicy
      */
     public function view(User $user, Settlement $settlement): bool
     {
-        return $settlement->group->users()->where('user_id', $user->id)->exists();
+        return $settlement->paid_from === $user->id || $settlement->paid_to === $user->id;
     }
 
     /**

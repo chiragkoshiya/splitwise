@@ -28,3 +28,48 @@ window.App = {
         console.log(`[${type.toUpperCase()}] ${message}`);
     },
 };
+// Connectivity Watcher
+window.Connectivity = {
+    isOnline: navigator.onLine,
+    
+    init() {
+        window.addEventListener('online', () => this.updateStatus(true));
+        window.addEventListener('offline', () => this.updateStatus(false));
+        
+        // Initial check
+        this.updateStatus(navigator.onLine);
+    },
+
+    updateStatus(status) {
+        this.isOnline = status;
+        document.body.classList.toggle('is-offline', !status);
+        
+        if (status) {
+            this.onOnline();
+        } else {
+            this.onOffline();
+        }
+
+        // Dispatch global event for Livewire components
+        window.dispatchEvent(new CustomEvent('connectivity-changed', { 
+            detail: { online: status } 
+        }));
+    },
+
+    onOnline() {
+        console.log("Connection restored.");
+        window.App.showToast("Connection restored. Syncing...", "success");
+        
+        // Refresh Livewire components
+        if (window.Livewire) {
+            window.Livewire.dispatch('refresh-all');
+        }
+    },
+
+    onOffline() {
+        console.log("Connection lost.");
+        window.App.showToast("You are currently offline.", "warning");
+    }
+};
+
+window.Connectivity.init();

@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use App\Models\Expense;
 use App\Models\Group;
+use App\Services\BalanceService;
 use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends Component
@@ -17,12 +18,15 @@ class Dashboard extends Component
     public $recentExpenses;
     public $quickGroups;
 
-    public function mount()
+    public function mount(BalanceService $balanceService)
     {
         $user = Auth::user();
         
-        // Calculate balance summary
-        $this->calculateBalances($user);
+        // Calculate balance summary via service
+        $summary = $balanceService->getUserBalanceSummary($user->id);
+        $this->totalBalance = $summary['total'];
+        $this->youOwe = $summary['owe'];
+        $this->youAreOwed = $summary['owed'];
         
         // Get recent expenses (last 5)
         $this->recentExpenses = Expense::whereHas('group.users', function($q) use ($user) {
@@ -38,19 +42,6 @@ class Dashboard extends Component
             ->withCount('users')
             ->take(3)
             ->get();
-    }
-    
-    private function calculateBalances($user)
-    {
-        // Get balances where user owes
-        $owes = $user->balancesOwed()->sum('amount');
-        
-        // Get balances where user is owed
-        $owed = $user->balancesOwedTo()->sum('amount');
-        
-        $this->youOwe = abs($owes);
-        $this->youAreOwed = $owed;
-        $this->totalBalance = $owed - abs($owes);
     }
 
     #[Layout('layouts.app', ['title' => 'Dashboard', 'active' => 'dashboard'])]

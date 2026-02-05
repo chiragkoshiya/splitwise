@@ -3,15 +3,25 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Services\LoggingService;
 
 class UserObserver
 {
+    public function __construct(
+        protected LoggingService $loggingService
+    ) {}
+
     /**
      * Handle the User "created" event.
      */
     public function created(User $user): void
     {
-        //
+        $this->loggingService->logAuthEvent(
+            userId: $user->id,
+            action: 'registered',
+            success: true,
+            metadata: ['email' => $user->email]
+        );
     }
 
     /**
@@ -19,30 +29,12 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
-    }
-
-    /**
-     * Handle the User "deleted" event.
-     */
-    public function deleted(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "restored" event.
-     */
-    public function restored(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     */
-    public function forceDeleted(User $user): void
-    {
-        //
+        if ($user->wasChanged('password')) {
+            $this->loggingService->logAuthEvent(
+                userId: $user->id,
+                action: 'password_changed',
+                success: true
+            );
+        }
     }
 }

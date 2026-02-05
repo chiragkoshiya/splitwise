@@ -3,23 +3,20 @@
 namespace App\Observers;
 
 use App\Models\Settlement;
+use App\Services\LoggingService;
 
 class SettlementObserver
 {
+    public function __construct(
+        protected LoggingService $loggingService
+    ) {}
+
     /**
      * Handle the Settlement "created" event.
      */
     public function created(Settlement $settlement): void
     {
-        //
-    }
-
-    /**
-     * Handle the Settlement "updated" event.
-     */
-    public function updated(Settlement $settlement): void
-    {
-        //
+        $this->loggingService->logSettlement($settlement);
     }
 
     /**
@@ -27,22 +24,16 @@ class SettlementObserver
      */
     public function deleted(Settlement $settlement): void
     {
-        //
-    }
-
-    /**
-     * Handle the Settlement "restored" event.
-     */
-    public function restored(Settlement $settlement): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Settlement "force deleted" event.
-     */
-    public function forceDeleted(Settlement $settlement): void
-    {
-        //
+        $this->loggingService->logActivity(
+            module: 'settlements',
+            action: 'deleted',
+            entityType: Settlement::class,
+            entityId: $settlement->id,
+            metadata: [
+                'amount' => $settlement->amount,
+                'from' => $settlement->paid_from,
+                'to' => $settlement->paid_to
+            ]
+        );
     }
 }

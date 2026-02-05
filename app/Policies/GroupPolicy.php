@@ -20,7 +20,7 @@ class GroupPolicy
      */
     public function view(User $user, Group $group): bool
     {
-        return $group->users()->where('user_id', $user->id)->exists();
+        return $group->users()->where('users.id', $user->id)->exists();
     }
 
     /**
@@ -36,7 +36,7 @@ class GroupPolicy
      */
     public function update(User $user, Group $group): bool
     {
-        return $group->created_by === $user->id || $group->users()->where('user_id', $user->id)->exists();
+        return $group->created_by === $user->id;
     }
 
     /**

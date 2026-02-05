@@ -1,9 +1,18 @@
 <?php
 
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-// Authentication routes will be handled by Laravel Breeze/Jetstream or custom auth
-// This file is included from web.php for organization
+Route::middleware('guest')->group(function () {
+    Route::get('login', Login::class)->name('login');
+    Route::get('register', Register::class)->name('register');
+});
 
-// If using Laravel Breeze/Jetstream, these routes are auto-registered
-// Otherwise, implement custom auth routes here
+Route::post('logout', function () {
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/');
+})->name('logout')->middleware('auth');

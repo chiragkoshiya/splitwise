@@ -36,7 +36,7 @@ class ExpensePolicy
      */
     public function update(User $user, Expense $expense): bool
     {
-        return $expense->created_by === $user->id || $expense->group->created_by === $user->id;
+        return $expense->created_by === $user->id;
     }
 
     /**

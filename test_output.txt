@@ -1,0 +1,191 @@
+PHPUnit 11.5.50 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.14
+Configuration: D:\Learning APP Project\mini_splitwise\phpunit.xml
+
+EE                                                                  2 / 2 (100%)
+
+Time: 00:01.118, Memory: 48.00 MB
+
+There were 2 errors:
+
+1) Tests\Unit\BalanceServiceTest::test_it_normalizes_user_pairs_correctly
+Illuminate\Database\QueryException: Array to string conversion (Connection: sqlite, Database: :memory:, SQL: insert into "auth_logs" ("user_id", "action", "ip_address", "user_agent", "success", "metadata") values (1, registered, 127.0.0.1, Symfony, 1, ?))
+
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:794
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:573
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:537
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4054
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2235
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1436
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1401
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1219
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\helpers.php:390
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1218
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2540
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2556
+D:\Learning APP Project\mini_splitwise\app\Services\LoggingService.php:165
+D:\Learning APP Project\mini_splitwise\app\Observers\UserObserver.php:19
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:508
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:315
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:295
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\HasEvents.php:224
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1422
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:370
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:272
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:365
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:321
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:560
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Arr.php:823
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Collection.php:844
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:552
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:506
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:490
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\GuardsAttributes.php:157
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:489
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:429
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:318
+D:\Learning APP Project\mini_splitwise\tests\Unit\BalanceServiceTest.php:27
+
+Caused by
+ErrorException: Array to string conversion
+
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php:258
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:734
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:580
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:794
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:573
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:537
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4054
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2235
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1436
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1401
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1219
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\helpers.php:390
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1218
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2540
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2556
+D:\Learning APP Project\mini_splitwise\app\Services\LoggingService.php:165
+D:\Learning APP Project\mini_splitwise\app\Observers\UserObserver.php:19
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:508
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:315
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:295
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\HasEvents.php:224
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1422
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:370
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:272
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:365
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:321
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:560
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Arr.php:823
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Collection.php:844
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:552
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:506
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:490
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\GuardsAttributes.php:157
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:489
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:429
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:318
+D:\Learning APP Project\mini_splitwise\tests\Unit\BalanceServiceTest.php:27
+
+2) Tests\Unit\BalanceServiceTest::test_it_calculates_user_balance_summary_correctly
+Illuminate\Database\QueryException: Array to string conversion (Connection: sqlite, Database: :memory:, SQL: insert into "auth_logs" ("user_id", "action", "ip_address", "user_agent", "success", "metadata") values (4, registered, 127.0.0.1, Symfony, 1, ?))
+
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:794
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:573
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:537
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4054
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2235
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1436
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1401
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1219
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\helpers.php:390
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1218
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2540
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2556
+D:\Learning APP Project\mini_splitwise\app\Services\LoggingService.php:165
+D:\Learning APP Project\mini_splitwise\app\Observers\UserObserver.php:19
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:508
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:315
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:295
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\HasEvents.php:224
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1422
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:370
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:272
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:365
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:321
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:560
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Arr.php:823
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Collection.php:844
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:552
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:506
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:490
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\GuardsAttributes.php:157
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:489
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:429
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:318
+D:\Learning APP Project\mini_splitwise\tests\Unit\BalanceServiceTest.php:40
+
+Caused by
+ErrorException: Array to string conversion
+
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php:258
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:734
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:580
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:794
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:573
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Connection.php:537
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:4054
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2235
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1436
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1401
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1219
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\helpers.php:390
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1218
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2540
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2556
+D:\Learning APP Project\mini_splitwise\app\Services\LoggingService.php:165
+D:\Learning APP Project\mini_splitwise\app\Observers\UserObserver.php:19
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:508
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:315
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Events\Dispatcher.php:295
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\HasEvents.php:224
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1422
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1240
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:370
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Traits\EnumeratesValues.php:272
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:365
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:321
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:560
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Arr.php:823
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Collections\Collection.php:844
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:552
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:506
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:490
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\GuardsAttributes.php:157
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:489
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:429
+D:\Learning APP Project\mini_splitwise\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Factories\Factory.php:318
+D:\Learning APP Project\mini_splitwise\tests\Unit\BalanceServiceTest.php:40
+
+ERRORS!
+Tests: 2, Assertions: 0, Errors: 2.

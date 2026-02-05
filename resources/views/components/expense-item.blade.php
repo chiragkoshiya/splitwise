@@ -5,7 +5,7 @@
     <div style="display: flex; align-items: flex-start; gap: 12px;">
         <div class="list-item__icon" style="background-color: var(--color-secondary);">💳</div>
         <div style="flex: 1; min-width: 0;">
-            <div class="list-item__title">{{ $expense->description }}</div>
+            <div class="list-item__title">{{ $expense->title }}</div>
             <div class="list-item__subtitle">
                 {{ $expense->group->name }} • {{ $expense->created_at->format('M d') }}
             </div>

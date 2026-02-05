@@ -15,7 +15,7 @@ class FinancialLog extends Model
         'from_user_id',
         'to_user_id',
         'amount',
-        'effect',
+        'type',
         'balance_before',
         'balance_after',
         'metadata',

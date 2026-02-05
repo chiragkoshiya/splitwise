@@ -3,15 +3,20 @@
 namespace App\Observers;
 
 use App\Models\Expense;
+use App\Services\LoggingService;
 
 class ExpenseObserver
 {
+    public function __construct(
+        protected LoggingService $loggingService
+    ) {}
+
     /**
      * Handle the Expense "created" event.
      */
     public function created(Expense $expense): void
     {
-        //
+        $this->loggingService->logExpenseCreated($expense);
     }
 
     /**
@@ -19,7 +24,8 @@ class ExpenseObserver
      */
     public function updated(Expense $expense): void
     {
-        //
+        $oldData = $expense->getOriginal();
+        $this->loggingService->logExpenseUpdated($expense, $oldData);
     }
 
     /**
@@ -27,22 +33,15 @@ class ExpenseObserver
      */
     public function deleted(Expense $expense): void
     {
-        //
-    }
-
-    /**
-     * Handle the Expense "restored" event.
-     */
-    public function restored(Expense $expense): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Expense "force deleted" event.
-     */
-    public function forceDeleted(Expense $expense): void
-    {
-        //
+        $this->loggingService->logActivity(
+            module: 'expenses',
+            action: 'deleted',
+            entityType: Expense::class,
+            entityId: $expense->id,
+            metadata: [
+                'title' => $expense->title,
+                'amount' => $expense->total_amount
+            ]
+        );
     }
 }
