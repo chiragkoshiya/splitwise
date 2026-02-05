@@ -2,22 +2,37 @@
 
 namespace App\Livewire\Groups;
 
+use App\Livewire\SecureComponent;
 use App\Models\Group;
 use App\Models\Expense;
 use App\Services\BalanceService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
-class Show extends Component
+class Show extends SecureComponent
 {
     public Group $group;
+    public $groupId;
 
-    public function mount(Group $group)
+    protected function authorizeAccess(): void
     {
-        $this->authorize('view', $group);
-        $this->group = $group;
+        // Load group first
+        $this->group = Group::findOrFail($this->groupId);
+        
+        // SECURITY: Verify group membership
+        if (!$this->group->users()->where('users.id', auth()->id())->exists()) {
+            abort(403, 'You are not a member of this group.');
+        }
+        
+        // Verify policy
+        $this->authorize('view', $this->group);
+    }
+
+    protected function secureMount(...$params): void
+    {
+        $this->groupId = $params[0] ?? null;
+        // Group already loaded in authorizeAccess
     }
 
     #[Layout('layouts.app', ['title' => 'Group Details', 'active' => 'groups', 'back' => true])]

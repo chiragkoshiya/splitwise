@@ -26,36 +26,32 @@ class ExpenseService
      */
     public function createExpense(array $data): Expense
     {
-        return DB::transaction(function () use ($data) {
-            $groupId = $data['group_id'];
-            $paidBy = $data['paid_by'];
-            $totalAmount = (float)$data['total_amount'];
-            $splits = $data['splits'] ?? [];
+        // SECURITY: Use FormRequest for strict validation (including exact split totals)
+        $request = new \App\Http\Requests\CreateExpenseRequest();
+        
+        // Manually run the validation logic of the FormRequest against the provided data
+        $validator = \Illuminate\Support\Facades\Validator::make($data, $request->rules());
+        
+        // Apply complex validation hooks from the FormRequest
+        $request->withValidator($validator);
+        
+        // This will throw ValidationException if fails
+        $validated = $validator->validate();
+
+        return DB::transaction(function () use ($validated) {
+            $groupId = $validated['group_id'];
+            $paidBy = $validated['paid_by'];
+            $totalAmount = (float)$validated['total_amount'];
+            $splits = $validated['splits'] ?? [];
             $createdBy = Auth::id();
 
-            // 1. Validate group membership
-            $group = Group::findOrFail($groupId);
-            if (!$group->users()->where('users.id', $paidBy)->exists()) {
-                throw new InvalidArgumentException("The payer must be a member of the group.");
-            }
-
-            // 2. Validate participants
-            foreach ($splits as $split) {
-                if (!$group->users()->where('users.id', $split['user_id'])->exists()) {
-                    throw new InvalidArgumentException("All split participants must be members of the group.");
-                }
-            }
-
-            // 3. Validate split totals
-            $splitTotal = collect($splits)->sum('share_amount');
-            if (abs($splitTotal - $totalAmount) > 0.01) {
-                throw new InvalidArgumentException("Split total ($splitTotal) must equal total amount ($totalAmount).");
-            }
+            // Note: Group membership and split totals are already validated strictly by CreateExpenseRequest
+            // so we can proceed directly to logic.
 
             // 4. Create expense
             $expense = Expense::create([
                 'group_id' => $groupId,
-                'title' => $data['title'],
+                'title' => $validated['title'],
                 'total_amount' => $totalAmount,
                 'paid_by' => $paidBy,
                 'created_by' => $createdBy,

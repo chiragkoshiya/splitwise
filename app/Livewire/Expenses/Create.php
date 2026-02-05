@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Expenses;
 
+use App\Livewire\SecureComponent;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\ExpenseService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
-class Create extends Component
+class Create extends SecureComponent
 {
     public Group $group;
+    public $groupId;
     
     public $title;
     public $amount;
@@ -26,10 +27,23 @@ class Create extends Component
         'selected_members' => 'required|array|min:1',
     ];
 
-    public function mount(Group $group)
+    protected function authorizeAccess(): void
     {
-        $this->authorize('view', $group);
-        $this->group = $group;
+        // Load group
+        $this->group = Group::findOrFail($this->groupId);
+        
+        // SECURITY: Verify group membership
+        if (!$this->group->users()->where('users.id', auth()->id())->exists()) {
+            abort(403, 'You are not a member of this group.');
+        }
+        
+        // Verify user can create expenses in this group
+        $this->authorize('create-expense', $this->group);
+    }
+
+    protected function secureMount(...$params): void
+    {
+        $this->groupId = $params[0] ?? null;
         $this->paid_by = Auth::id();
         
         // Default: everyone in group is selected

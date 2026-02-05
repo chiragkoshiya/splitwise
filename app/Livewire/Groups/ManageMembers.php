@@ -2,26 +2,39 @@
 
 namespace App\Livewire\Groups;
 
+use App\Livewire\SecureComponent;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\GroupService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
-class ManageMembers extends Component
+class ManageMembers extends SecureComponent
 {
     public Group $group;
+    public $groupId;
     public $email;
 
     protected $rules = [
         'email' => 'required|email|exists:users,email',
     ];
 
-    public function mount(Group $group)
+    protected function authorizeAccess(): void
     {
-        $this->authorize('view', $group);
-        $this->group = $group;
+        $this->group = Group::findOrFail($this->groupId);
+        
+        // SECURITY: Verify group membership
+        if (!$this->group->users()->where('users.id', auth()->id())->exists()) {
+            abort(403, 'You are not a member of this group.');
+        }
+        
+        // SECURITY: Only group admin can manage members
+        $this->authorize('update', $this->group);
+    }
+
+    protected function secureMount(...$params): void
+    {
+        $this->groupId = $params[0] ?? null;
     }
 
     public function addMember(GroupService $groupService)

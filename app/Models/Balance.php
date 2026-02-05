@@ -8,12 +8,52 @@ use Illuminate\Database\Eloquent\Model;
 class Balance extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'group_id',
-        'from_user_id',
-        'to_user_id',
-        'amount',
-    ];
+    
+    /**
+     * SECURITY: Block ALL mass assignment to prevent direct balance manipulation.
+     * Balances can only be modified through BalanceService.
+     */
+    protected $guarded = ['*'];
+
+    /**
+     * Boot method to enforce read-only constraint
+     */
+    protected static function booted()
+    {
+        // Prevent updates outside BalanceService
+        static::updating(function ($balance) {
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15);
+            $isFromService = collect($trace)->contains(function ($frame) {
+                return isset($frame['class']) && 
+                       $frame['class'] === 'App\\Services\\BalanceService';
+            });
+            
+            if (!$isFromService) {
+                throw new \Exception(
+                    'SECURITY VIOLATION: Direct Balance updates are forbidden. ' .
+                    'Use BalanceService::adjustPairBalance() instead.'
+                );
+            }
+        });
+        
+        // Prevent creation outside BalanceService
+        static::creating(function ($balance) {
+            if (!app()->runningInConsole() && !defined('BALANCE_SERVICE_CONTEXT')) {
+                throw new \Exception(
+                    'SECURITY VIOLATION: Direct Balance creation is forbidden. ' .
+                    'Use BalanceService::adjustPairBalance() instead.'
+                );
+            }
+        });
+        
+        // Prevent deletion - balances are immutable
+        static::deleting(function () {
+            throw new \Exception(
+                'SECURITY VIOLATION: Balances cannot be deleted. ' .
+                'Create a reversal entry through BalanceService instead.'
+            );
+        });
+    }
 
     protected function casts(): array
     {

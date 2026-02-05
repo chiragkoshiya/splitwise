@@ -21,6 +21,9 @@ class BalanceService
      */
     public function updateBalancesFromExpense(Expense $expense): void
     {
+        // SECURITY: Prevent race conditions
+        DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
         DB::transaction(function () use ($expense) {
             $payerId = $expense->paid_by;
             $groupId = $expense->group_id;
@@ -49,6 +52,9 @@ class BalanceService
      */
     public function reverseBalancesFromExpense(Expense $expense): void
     {
+        // SECURITY: Prevent race conditions
+        DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
         DB::transaction(function () use ($expense) {
             $payerId = $expense->paid_by;
             $groupId = $expense->group_id;
@@ -75,6 +81,9 @@ class BalanceService
      */
     public function updateBalancesFromSettlement(Settlement $settlement): void
     {
+        // SECURITY: Prevent race conditions
+        DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
         DB::transaction(function () use ($settlement) {
             // Logic: paid_from owes paid_to. Settlement reduces that debt.
             $this->adjustPairBalance(
@@ -94,6 +103,9 @@ class BalanceService
      */
     public function reverseBalancesFromSettlement(Settlement $settlement): void
     {
+        // SECURITY: Prevent race conditions
+        DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
         DB::transaction(function () use ($settlement) {
             // Logic: Reverse the reduction by adding the amount back.
             $this->adjustPairBalance(
@@ -124,6 +136,11 @@ class BalanceService
         // If the normalized debtor is the creditor, delta is negative (U2 owes U1)
         $actualDelta = ($u1 === $debtorId) ? $delta : -$delta;
 
+        // Set context to allow Balance manipulation from this service
+        if (!defined('BALANCE_SERVICE_CONTEXT')) {
+            define('BALANCE_SERVICE_CONTEXT', true);
+        }
+
         $balance = Balance::where([
             ['group_id', '=', $groupId],
             ['from_user_id', '=', $u1],
@@ -134,14 +151,17 @@ class BalanceService
         $newAmount = $oldAmount + $actualDelta;
 
         if ($balance) {
-            $balance->update(['amount' => $newAmount]);
+            // Use forceFill to bypass $guarded
+            $balance->forceFill(['amount' => $newAmount])->save();
         } else {
-            $balance = Balance::create([
+            // Use forceFill for creation
+            $balance = new Balance();
+            $balance->forceFill([
                 'group_id' => $groupId,
                 'from_user_id' => $u1,
                 'to_user_id' => $u2,
                 'amount' => $newAmount,
-            ]);
+            ])->save();
         }
 
         // Financial Audit Log

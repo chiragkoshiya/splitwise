@@ -23,26 +23,31 @@ class SettlementService
      */
     public function createSettlement(array $data): Settlement
     {
-        return DB::transaction(function () use ($data) {
-            $groupId = $data['group_id'];
-            $fromId = $data['paid_from'];
-            $toId = $data['paid_to'];
-            $amount = (float)$data['amount'];
-            $createdBy = Auth::id() ?? $fromId; // Default to payer if not logged in (e.g. testing)
+        // SECURITY: Use FormRequest for strict input validation
+        $request = new \App\Http\Requests\CreateSettlementRequest();
+        $validator = \Illuminate\Support\Facades\Validator::make($data, $request->rules());
+        $request->withValidator($validator);
+        $validated = $validator->validate();
+
+        return DB::transaction(function () use ($validated, $data) { // Use validated for keys, keep logic
+            $groupId = $validated['group_id'];
+            $fromId = $validated['paid_from'];
+            $toId = $validated['paid_to'];
+            $amount = (float)$validated['amount'];
+            $createdBy = Auth::id() ?? $fromId;
 
             if ($amount <= 0) {
-                throw new InvalidArgumentException("Settlement amount must be greater than zero.");
+                throw new InvalidArgumentException("Settlement amount must be greater than zero."); // Redundant but safe
             }
 
             if ($fromId === $toId) {
-                throw new InvalidArgumentException("Cannot settle with yourself.");
+                throw new InvalidArgumentException("Cannot settle with yourself."); // Redundant but safe
             }
 
-            // 1. Validate group membership
-            $group = Group::findOrFail($groupId);
-            if ($group->users()->whereIn('users.id', [$fromId, $toId])->count() !== 2) {
-                throw new InvalidArgumentException("Both users must be members of the group.");
-            }
+            // 1. Validate group membership (Already done by FormRequest, keeping for safe measure inside transaction or removing? 
+            // FormRequest `withValidator` logic checks this. We can remove the explicit check here to clean up, 
+            // or keep it if we fear race conditions (membership changing between validation and transaction? Unlikely in this flow).
+            // I will remove the explicit query to save performance as requested.
 
             // 2. Prevent over-settlement
             // Get how much $fromId owes $toId
@@ -55,8 +60,19 @@ class SettlementService
                 throw new InvalidArgumentException("User does not owe any money to this participant.");
             }
 
-            if ($amount > ($currentOwed + 0.01)) { // Added small margin for float precision
-                throw new InvalidArgumentException("Settlement amount ($amount) exceeds the amount owed ($currentOwed).");
+            // SECURITY: Strict validation - NO margin to prevent micro-theft attacks
+            if ($amount > $currentOwed) {
+                throw new InvalidArgumentException(sprintf(
+                    'Settlement amount ($%s) exceeds amount owed ($%s). Maximum allowed: $%s',
+                    number_format($amount, 2),
+                    number_format($currentOwed, 2),
+                    number_format($currentOwed, 2)
+                ));
+            }
+            
+            // Validate minimum amount
+            if ($amount <= 0) {
+                throw new InvalidArgumentException('Settlement amount must be greater than zero.');
             }
 
             // 3. Create Settlement record

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FinancialLog extends Model
 {
+    use \App\Traits\ImmutableFinancialRecord;
     public $timestamps = false;
 
     protected $fillable = [

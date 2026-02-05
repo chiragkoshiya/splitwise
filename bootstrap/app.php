@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'group.member' => \App\Http\Middleware\EnsureUserIsGroupMember::class,
+            'group.member' => \App\Http\Middleware\EnsureGroupMember::class,
+            'throttle.financial' => \App\Http\Middleware\ThrottleFinancialActions::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

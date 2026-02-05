@@ -2,20 +2,32 @@
 
 namespace App\Livewire\Balances;
 
+use App\Livewire\SecureComponent;
 use App\Models\Group;
 use App\Services\BalanceService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
-class Index extends Component
+class Index extends SecureComponent
 {
     public Group $group;
+    public $groupId;
 
-    public function mount(Group $group)
+    protected function authorizeAccess(): void
     {
-        $this->authorize('view', $group);
-        $this->group = $group;
+        $this->group = Group::findOrFail($this->groupId);
+        
+        // SECURITY: Verify group membership
+        if (!$this->group->users()->where('users.id', auth()->id())->exists()) {
+            abort(403, 'You are not a member of this group.');
+        }
+        
+        $this->authorize('view', $this->group);
+    }
+
+    protected function secureMount(...$params): void
+    {
+        $this->groupId = $params[0] ?? null;
     }
 
     #[Layout('layouts.app', ['title' => 'Group Balances', 'active' => 'groups', 'back' => true])]

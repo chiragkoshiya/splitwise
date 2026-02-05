@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Settlements;
 
+use App\Livewire\SecureComponent;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\SettlementService;
@@ -9,11 +10,11 @@ use App\Services\BalanceService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
 
-class Create extends Component
+class Create extends SecureComponent
 {
     public Group $group;
+    public $groupId;
     
     public $paid_from;
     public $paid_to;
@@ -29,14 +30,28 @@ class Create extends Component
         'note' => 'nullable|string|max:255',
     ];
 
-    public function mount(Group $group, BalanceService $balanceService)
+    protected function authorizeAccess(): void
     {
-        $this->authorize('view', $group);
-        $this->group = $group;
+        // Load group
+        $this->group = Group::findOrFail($this->groupId);
+        
+        // SECURITY: Verify group membership
+        if (!$this->group->users()->where('users.id', auth()->id())->exists()) {
+            abort(403, 'You are not a member of this group.');
+        }
+        
+        // Verify user can create settlements
+        $this->authorize('create-settlement', $this->group);
+    }
+
+    protected function secureMount(...$params): void
+    {
+        $this->groupId = $params[0] ?? null;
         $this->paid_from = Auth::id();
         
         // Try to find someone the user owes to pre-fill
-        $balances = $balanceService->getUserBalancesForGroup($group->id, Auth::id());
+        $balanceService = app(BalanceService::class);
+        $balances = $balanceService->getUserBalancesForGroup($this->group->id, Auth::id());
         foreach ($balances as $balance) {
             $u1 = $balance->from_user_id;
             $currentUserId = Auth::id();
